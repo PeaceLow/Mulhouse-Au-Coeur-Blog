@@ -1,0 +1,19 @@
+/*
+Theme Name: Mulhouse au Cœur
+Theme URI: https://github.com/PeaceLow/Mulhouse-Au-Coeur-Blog
+Author: Mulhouse au Cœur
+Author URI: https://github.com/PeaceLow/Mulhouse-Au-Coeur-Blog
+Description: Thème WordPress moderne (Block Theme / FSE) pour le média et blog citoyen de Mulhouse. Conçu pour la performance, l'autonomie éditoriale et la valorisation des initiatives locales.
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 8.0
+Version: 1.0.0
+License: GNU General Public License v2 or later
+Text Domain: mulhouse-au-coeur
+Tags: block-theme, full-site-editing, news, blog, accessible-ready, translation-ready
+*/
+
+/*
+Les styles principaux, la palette de couleurs, les polices et espacements 
+sont entièrement pilotés par le fichier theme.json conformément aux standards WordPress FSE.
+*/

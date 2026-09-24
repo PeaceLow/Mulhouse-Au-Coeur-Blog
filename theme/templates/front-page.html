@@ -1,0 +1,165 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<main class="wp-block-group" style="margin-top:0">
+  
+  <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"2.5rem","bottom":"2.5rem"}}}} -->
+  <div class="wp-block-group alignwide" style="padding-top:2.5rem;padding-bottom:2.5rem">
+    
+    <!-- SECTION HERO : ARTICLE À LA UNE & DERNIÈRES PUBLICATIONS -->
+    <!-- wp:query {"queryId":1,"query":{"perPage":1,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"include"}} -->
+    <div class="wp-block-query">
+      <!-- wp:post-template -->
+        <!-- wp:columns {"style":{"spacing":{"blockGap":"2rem"}}} -->
+        <div class="wp-block-columns">
+          
+          <!-- wp:column {"width":"60%"} -->
+          <div class="wp-block-column" style="flex-basis:60%">
+            <!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/9","style":{"border":{"radius":"8px"}}} /-->
+          </div>
+          <!-- /wp:column -->
+
+          <!-- wp:column {"width":"40%","layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
+          <div class="wp-block-column" style="flex-basis:40%">
+            <!-- wp:post-terms {"term":"category","style":{"typography":{"textTransform":"uppercase","fontWeight":"700","fontSize":"0.8rem"},"color":{"text":"var:preset|color|primary"}}} /-->
+            <!-- wp:post-title {"isLink":true,"style":{"typography":{"fontSize":"2rem","lineHeight":"1.2"}}} /-->
+            <!-- wp:post-excerpt {"moreText":"Lire l'article complet →","style":{"typography":{"fontSize":"1.05rem"},"color":{"text":"var:preset|color|muted"}}} /-->
+            <!-- wp:group {"layout":{"type":"flex"},"style":{"spacing":{"blockGap":"0.5rem"},"typography":{"fontSize":"0.85rem"},"color":{"text":"var:preset|color|muted"}}} -->
+            <div class="wp-block-group has-muted-color has-text-color" style="font-size:0.85rem">
+              <!-- wp:post-author {"showAvatar":false} /-->
+              <span>•</span>
+              <!-- wp:post-date /-->
+            </div>
+            <!-- /wp:group -->
+          </div>
+          <!-- /wp:column -->
+
+        </div>
+        <!-- /wp:columns -->
+      <!-- /wp:post-template -->
+    </div>
+    <!-- /wp:query -->
+
+  </div>
+  <!-- /wp:group -->
+
+  <!-- wp:separator {"align":"wide","backgroundColor":"border"} -->
+  <hr class="wp-block-separator alignwide has-text-color has-border-background-color has-background"/>
+  <!-- /wp:separator -->
+
+  <!-- SECTION : DÉCRYPTER & DÉBATTRE (2 COLONNES MAJEURES) -->
+  <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"3rem","bottom":"3rem"}}}} -->
+  <div class="wp-block-group alignwide" style="padding-top:3rem;padding-bottom:3rem">
+    <!-- wp:columns {"style":{"spacing":{"blockGap":"3rem"}}} -->
+    <div class="wp-block-columns">
+      
+      <!-- COLONNE 1 : DÉCRYPTER -->
+      <!-- wp:column -->
+      <div class="wp-block-column">
+        <!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between"}} -->
+        <div class="wp-block-group">
+          <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"1.5rem"},"color":{"text":"var:preset|color|primary"}}} -->
+          <h2 class="wp-block-heading has-primary-color has-text-color" style="font-size:1.5rem">📊 DÉCRYPTER</h2>
+          <!-- /wp:heading -->
+          <!-- wp:paragraph {"style":{"typography":{"fontSize":"0.9rem"}}} -->
+          <p style="font-size:0.9rem"><a href="/category/decrypter">Tout voir →</a></p>
+          <!-- /wp:paragraph -->
+        </div>
+        <!-- /wp:group -->
+        
+        <!-- wp:query {"queryId":2,"query":{"perPage":2,"pages":0,"offset":0,"postType":"post","categoryIds":[],"order":"desc","orderBy":"date"}} -->
+        <div class="wp-block-query">
+          <!-- wp:post-template -->
+            <!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/9","style":{"border":{"radius":"6px"},"spacing":{"margin":{"bottom":"0.75rem"}}}} /-->
+            <!-- wp:post-title {"isLink":true,"style":{"typography":{"fontSize":"1.2rem"}}} /-->
+            <!-- wp:post-excerpt {"wordCount":20,"style":{"typography":{"fontSize":"0.95rem"},"color":{"text":"var:preset|color|muted"}}} /-->
+          <!-- /wp:post-template -->
+        </div>
+        <!-- /wp:query -->
+      </div>
+      <!-- /wp:column -->
+
+      <!-- COLONNE 2 : DÉBATTRE -->
+      <!-- wp:column -->
+      <div class="wp-block-column">
+        <!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between"}} -->
+        <div class="wp-block-group">
+          <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"1.5rem"},"color":{"text":"var:preset|color|secondary"}}} -->
+          <h2 class="wp-block-heading has-secondary-color has-text-color" style="font-size:1.5rem">💬 DÉBATTRE</h2>
+          <!-- /wp:heading -->
+          <!-- wp:paragraph {"style":{"typography":{"fontSize":"0.9rem"}}} -->
+          <p style="font-size:0.9rem"><a href="/category/debattre">Tout voir →</a></p>
+          <!-- /wp:paragraph -->
+        </div>
+        <!-- /wp:group -->
+
+        <!-- wp:query {"queryId":3,"query":{"perPage":2,"pages":0,"offset":0,"postType":"post","categoryIds":[],"order":"desc","orderBy":"date"}} -->
+        <div class="wp-block-query">
+          <!-- wp:post-template -->
+            <!-- wp:post-featured-image {"isLink":true,"aspectRatio":"16/9","style":{"border":{"radius":"6px"},"spacing":{"margin":{"bottom":"0.75rem"}}}} /-->
+            <!-- wp:post-title {"isLink":true,"style":{"typography":{"fontSize":"1.2rem"}}} /-->
+            <!-- wp:post-excerpt {"wordCount":20,"style":{"typography":{"fontSize":"0.95rem"},"color":{"text":"var:preset|color|muted"}}} /-->
+          <!-- /wp:post-template -->
+        </div>
+        <!-- /wp:query -->
+      </div>
+      <!-- /wp:column -->
+
+    </div>
+    <!-- /wp:columns -->
+  </div>
+  <!-- /wp:group -->
+
+  <!-- BANNIÈRE D'APPEL À CONTRIBUTION CITOYENNE -->
+  <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"3rem","bottom":"3rem","left":"1.5rem","right":"1.5rem"}},"color":{"background":"var:preset|color|surface"}}} -->
+  <div class="wp-block-group alignfull has-surface-background-color has-background" style="padding-top:3rem;padding-right:1.5rem;padding-bottom:3rem;padding-left:1.5rem">
+    <!-- wp:group {"align":"wide","layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"}} -->
+    <div class="wp-block-group alignwide">
+      <!-- wp:group {"style":{"spacing":{"blockGap":"0.5rem"}}} -->
+      <div class="wp-block-group">
+        <!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"1.6rem"}}} -->
+        <h3 class="wp-block-heading" style="font-size:1.6rem">Vous avez une information, une idée ou un coup de cœur à Mulhouse ?</h3>
+        <!-- /wp:heading -->
+        <!-- wp:paragraph {"style":{"color":{"text":"var:preset|color|muted"}}} -->
+        <p class="has-muted-color has-text-color">Ce média est fait pour et par les habitants. Proposez un sujet d'enquête, une tribune ou une initiative de quartier.</p>
+        <!-- /wp:paragraph -->
+      </div>
+      <!-- /wp:group -->
+
+      <!-- wp:buttons -->
+      <div class="wp-block-buttons">
+        <!-- wp:button {"style":{"color":{"background":"var:preset|color|primary"}}} -->
+        <div class="wp-block-button"><a class="wp-block-button__link has-primary-background-color has-background wp-element-button" href="/contact#proposer">Contribuer au média</a></div>
+        <!-- /wp:button -->
+      </div>
+      <!-- /wp:buttons -->
+    </div>
+    <!-- /wp:group -->
+  </div>
+  <!-- /wp:group -->
+
+  <!-- SECTION : AGIR & VALORISER -->
+  <!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"3.5rem","bottom":"4rem"}}}} -->
+  <div class="wp-block-group alignwide" style="padding-top:3.5rem;padding-bottom:4rem">
+    <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"1.5rem"}}} -->
+    <h2 class="wp-block-heading" style="font-size:1.5rem">🤝 AGIR & VALORISER</h2>
+    <!-- /wp:heading -->
+    <!-- wp:paragraph {"style":{"color":{"text":"var:preset|color|muted"},"spacing":{"margin":{"bottom":"2rem"}}}} -->
+    <p class="has-muted-color has-text-color" style="margin-bottom:2rem">Portraits de Mulhousiens, projets associatifs, initiatives écologiques et citoyennes.</p>
+    <!-- /wp:paragraph -->
+
+    <!-- wp:query {"queryId":4,"query":{"perPage":3,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date"}} -->
+    <div class="wp-block-query">
+      <!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+        <!-- wp:post-featured-image {"isLink":true,"aspectRatio":"4/3","style":{"border":{"radius":"6px"},"spacing":{"margin":{"bottom":"0.75rem"}}}} /-->
+        <!-- wp:post-terms {"term":"category","style":{"typography":{"fontWeight":"700","fontSize":"0.75rem"}}} /-->
+        <!-- wp:post-title {"isLink":true,"style":{"typography":{"fontSize":"1.15rem"}}} /-->
+        <!-- wp:post-excerpt {"wordCount":15,"style":{"typography":{"fontSize":"0.9rem"},"color":{"text":"var:preset|color|muted"}}} /-->
+      <!-- /wp:post-template -->
+    </div>
+    <!-- /wp:query -->
+  </div>
+  <!-- /wp:group -->
+
+</main>
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
