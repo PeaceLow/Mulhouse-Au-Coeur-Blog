@@ -1,6 +1,6 @@
 <?php
 /**
- * Fonctions et définitions du thème Mulhouse au Cœur
+ * Fonctions et definitions du theme Mulhouse au Coeur
  *
  * @package MulhouseAuCoeur
  */
@@ -30,20 +30,21 @@ function mac_setup_site() {
 		return;
 	}
 
-	update_option( 'blogname', 'Mulhouse au Cœur' );
-	update_option( 'blogdescription', 'Média citoyen libre & participatif' );
+	update_option( 'blogname', 'Mulhouse au Coeur' );
+	update_option( 'blogdescription', 'Media citoyen libre et participatif' );
 	update_option( 'timezone_string', 'Europe/Paris' );
 	update_option( 'date_format', 'j F Y' );
 	update_option( 'WPLANG', 'fr_FR' );
+	update_option( 'permalink_structure', '/%postname%/' );
 
 	update_option( 'mac_site_configured', true );
 }
 add_action( 'init', 'mac_setup_site', 5 );
 
 /**
- * Télécharge une image depuis une URL et l'attache à un post
+ * Telecharge une image depuis une URL et l attache a un post
  */
-function mac_sideload_image( $url, $post_id, $description = '' ) {
+function mac_sideload_image( $url, $post_id, $desc = '' ) {
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -54,11 +55,11 @@ function mac_sideload_image( $url, $post_id, $description = '' ) {
 	}
 
 	$file_array = array(
-		'name'     => sanitize_file_name( basename( parse_url( $url, PHP_URL_PATH ) ) ) . '.jpg',
+		'name'     => 'mac-' . md5( $url ) . '.jpg',
 		'tmp_name' => $tmp,
 	);
 
-	$attachment_id = media_handle_sideload( $file_array, $post_id, $description );
+	$attachment_id = media_handle_sideload( $file_array, $post_id, $desc );
 	if ( is_wp_error( $attachment_id ) ) {
 		@unlink( $tmp );
 		return false;
@@ -68,67 +69,38 @@ function mac_sideload_image( $url, $post_id, $description = '' ) {
 }
 
 /**
- * Initialisation automatique des catégories et articles de démonstration
+ * Contenu de demonstration
  */
 function mac_seed_demo_content() {
-	// Ne pas réexécuter si le contenu de démo a déjà été créé (version 3)
-	if ( get_option( 'mac_demo_content_v3' ) ) {
+	if ( get_option( 'mac_demo_v5' ) ) {
 		return;
 	}
 
-	// Supprimer l'ancien contenu de démo et le post par défaut "Hello World"
-	$old_posts = get_posts( array(
-		'numberposts' => -1,
-		'post_status' => 'any',
-	) );
-	foreach ( $old_posts as $old_post ) {
-		wp_delete_post( $old_post->ID, true );
+	// Supprimer les anciens posts
+	$old = get_posts( array( 'numberposts' => -1, 'post_status' => 'any' ) );
+	foreach ( $old as $p ) {
+		wp_delete_post( $p->ID, true );
 	}
 
-	// Supprimer l'ancienne page d'exemple
-	$old_pages = get_posts( array(
-		'numberposts' => -1,
-		'post_type'   => 'page',
-		'post_status' => 'any',
-	) );
-	foreach ( $old_pages as $old_page ) {
-		wp_delete_post( $old_page->ID, true );
+	// Supprimer les anciennes pages
+	$old_pages = get_posts( array( 'numberposts' => -1, 'post_type' => 'page', 'post_status' => 'any' ) );
+	foreach ( $old_pages as $p ) {
+		wp_delete_post( $p->ID, true );
 	}
 
-	// 1. Création des catégories éditoriales officielles
-	$categories = array(
-		'decrypter' => array(
-			'name'        => 'Décrypter',
-			'description' => 'Comprendre les enjeux mulhousiens : actualité locale, données, décisions publiques, dossiers de fond et décryptages.',
-		),
-		'debattre'  => array(
-			'name'        => 'Débattre',
-			'description' => 'Tribunes citoyennes, interviews croisées, opinions et confrontations de points de vue sur l\'avenir de Mulhouse.',
-		),
-		'agir'      => array(
-			'name'        => 'Agir',
-			'description' => 'Initiatives concrètes, événements, mobilisations de quartier et propositions citoyennes pour Mulhouse.',
-		),
-		'valoriser' => array(
-			'name'        => 'Valoriser',
-			'description' => 'Portraits de Mulhousiens : habitants, associations, créateurs, commerçants et acteurs culturels qui font vivre la ville.',
-		),
+	// Categories
+	$cats = array(
+		'decrypter' => 'Decrypter',
+		'debattre'  => 'Debattre',
+		'agir'      => 'Agir',
+		'valoriser' => 'Valoriser',
 	);
 
-	// Supprimer la catégorie "Uncategorized"
-	$default_cat = get_term_by( 'slug', 'uncategorized', 'category' );
-	if ( $default_cat ) {
-		wp_delete_term( $default_cat->term_id, 'category' );
-	}
-
 	$cat_ids = array();
-	foreach ( $categories as $slug => $data ) {
+	foreach ( $cats as $slug => $name ) {
 		$term = get_term_by( 'slug', $slug, 'category' );
 		if ( ! $term ) {
-			$res = wp_insert_term( $data['name'], 'category', array(
-				'slug'        => $slug,
-				'description' => $data['description'],
-			) );
+			$res = wp_insert_term( $name, 'category', array( 'slug' => $slug ) );
 			if ( ! is_wp_error( $res ) ) {
 				$cat_ids[ $slug ] = $res['term_id'];
 			}
@@ -137,152 +109,84 @@ function mac_seed_demo_content() {
 		}
 	}
 
-	// 2. Création des articles avec images réalistes
-	$demo_posts = array(
+	// Articles
+	$posts = array(
 		array(
-			'title'    => 'Transports en commun et mobilités douces : où va le réseau mulhousien d'ici 2030 ?',
-			'category' => 'decrypter',
-			'excerpt'  => 'Alors que le plan de déplacement urbain fait débat dans l'agglomération, nous avons épluché les données de fréquentation du tramway et les futurs aménagements cyclables pour comprendre les enjeux.',
-			'content'  => '<!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Entre extensions de pistes cyclables et cadencement des lignes Soléa, les choix d'investissements soulèvent des questions cruciales pour le quotidien de dizaines de milliers d'habitants.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Dans cette enquête approfondie, nous revenons sur les investissements prévus par la collectivité, les zones blanches encore mal desservies dans les quartiers périphériques, et les solutions pragmatiques inspirées des villes voisines rhénanes comme Freiburg ou Bâle.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:quote -->
-<blockquote class="wp-block-quote"><p>« Le tramway est le colonne vertébrale de la mobilité mulhousienne, mais il ne suffit plus à répondre aux besoins des quartiers excentrés. »</p><cite>Un responsable des transports de l'agglomération</cite></blockquote>
-<!-- /wp:quote -->
-
-<!-- wp:paragraph -->
-<p>Les chiffres parlent d'eux-mêmes : la fréquentation du tramway a augmenté de 12% en trois ans, tandis que le réseau cyclable ne couvre que 38% des axes principaux. La question du dernier kilomètre reste entière pour des quartiers comme Bourtzwiller ou les Coteaux.</p>
-<!-- /wp:paragraph -->',
+			'title'    => 'Transports en commun et mobilites douces : ou va le reseau mulhousien ?',
+			'cat'      => 'decrypter',
+			'excerpt'  => 'Alors que le plan de deplacement urbain fait debat, nous avons epluche les donnees de frequentation du tramway et les futurs amenagements cyclables.',
+			'content'  => "<!-- wp:paragraph -->\n<p>Entre extensions de pistes cyclables et cadencement des lignes Solea, les choix d'investissements soulevent des questions cruciales pour le quotidien des habitants.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Dans cette enquete approfondie, nous revenons sur les investissements prevus par la collectivite et les solutions pragmatiques inspirees des villes voisines rhenanes.</p>\n<!-- /wp:paragraph -->",
 			'image'    => 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1200&q=80',
 			'date'     => '2026-09-26 10:00:00',
 		),
 		array(
-			'title'    => 'Tribune : « La place Franklin mérite une véritable concertation avec ses résidents »',
-			'category' => 'debattre',
-			'excerpt'  => 'Point de vue de Karim B., commerçant et membre du collectif des habitants de Franklin, qui appelle à repenser les usages, la sécurité et l'aménagement urbain par le dialogue et non par le décret.',
-			'content'  => '<!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">On ne transforme pas un quartier historique à coups de décisions unilatérales prises depuis un bureau. Il est temps d'écouter ceux qui y vivent chaque jour.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>La vie de quartier repose d'abord sur la confiance et l'écoute mutuelle. C'est pourquoi nous proposons l'organisation d'ateliers citoyens ouverts chaque trimestre pour coconstruire les futurs aménagements urbains avec les habitants, les commerçants et les associations de proximité.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Le dernier réaménagement de la place a été pensé sans aucune consultation préalable des riverains. Résultat ? Des bancs publics tournés contre les façades, un éclairage insuffisant le soir, et un espace vert réduit de moitié. Des choix incompréhensibles pour ceux qui connaissent le terrain.</p>
-<!-- /wp:paragraph -->',
+			'title'    => 'Tribune : La place Franklin merite une veritable concertation avec ses residents',
+			'cat'      => 'debattre',
+			'excerpt'  => 'Point de vue de Karim B., commercant et membre du collectif des habitants de Franklin, qui appelle a repenser les usages par le dialogue.',
+			'content'  => "<!-- wp:paragraph -->\n<p>On ne transforme pas un quartier historique a coups de decisions unilaterales. La vie de quartier repose sur la confiance et l'ecoute mutuelle.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>C'est pourquoi nous proposons l'organisation d'ateliers citoyens ouverts chaque trimestre pour coconstruire les futurs amenagements urbains.</p>\n<!-- /wp:paragraph -->",
 			'image'    => 'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1200&q=80',
 			'date'     => '2026-09-25 14:30:00',
 		),
 		array(
-			'title'    => 'Végétalisation participative : quand les habitants des Coteaux réinventent leurs cours d'immeubles',
-			'category' => 'agir',
-			'excerpt'  => 'Retour sur une opération citoyenne exemplaire menée samedi dernier par une trentaine de bénévoles et familles du quartier des Coteaux, pelles et terreau en main.',
-			'content'  => '<!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Pelles et terreau en main, les résidents ont transformé 400 m² de dalles de béton en îlots de fraîcheur et potagers partagés en l'espace d'un week-end.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Une dynamique locale forte qui prouve que l'action citoyenne à l'échelle d'un îlot d'immeubles crée du lien intergénérationnel et répond directement aux défis climatiques urbains. Les enfants ont participé aux plantations tandis que les anciens partageaient leurs connaissances en jardinage.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Ce projet, soutenu par le bailleur social Mulhouse Habitat et la Ville, a mobilisé trois associations locales et une vingtaine de familles. Il sera répliqué dans deux autres résidences du quartier d'ici l'automne.</p>
-<!-- /wp:paragraph -->',
+			'title'    => 'Vegetalisation participative : quand les habitants des Coteaux reinventent leurs cours',
+			'cat'      => 'agir',
+			'excerpt'  => 'Retour sur une operation citoyenne exemplaire menee samedi dernier par une trentaine de benevoles et familles du quartier.',
+			'content'  => "<!-- wp:paragraph -->\n<p>Pelles et terreau en main, les residents ont transforme 400 m2 de dalles de beton en ilots de fraicheur et potagers partages.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Ce projet a mobilise trois associations locales et une vingtaine de familles. Il sera replique dans deux autres residences du quartier.</p>\n<!-- /wp:paragraph -->",
 			'image'    => 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80',
 			'date'     => '2026-09-24 09:15:00',
 		),
 		array(
-			'title'    => 'Portrait : Sophie, artisane céramiste qui fait rayonner le savoir-faire textile et design à la Fonderie',
-			'category' => 'valoriser',
-			'excerpt'  => 'Installée dans les ateliers partagés de la Fonderie, elle réinterprète les motifs historiques de l'impression textile mulhousienne avec une approche résolument contemporaine.',
-			'content'  => '<!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">« Mulhouse a une âme industrielle et créative unique en Alsace qu'il faut absolument chérir et soutenir. C'est cette âme qui m'a fait rester ici. »</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Dans cet entretien passionnant, Sophie nous ouvre les portes de son atelier baigné de lumière naturelle et partage son amour pour l'héritage ouvrier et artistique de la ville du Bollwerk. Ses pièces de céramique, ornées de motifs inspirés des archives de la Société Industrielle de Mulhouse, sont vendues dans toute l'Europe.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Avec trois autres artisans, elle organise des ateliers découverte chaque mercredi pour les jeunes du quartier. « Transmettre, c'est aussi créer du lien social » dit-elle en souriant.</p>
-<!-- /wp:paragraph -->',
+			'title'    => 'Portrait : Sophie, artisane ceramiste qui fait rayonner le design a la Fonderie',
+			'cat'      => 'valoriser',
+			'excerpt'  => 'Installee dans les ateliers partages de la Fonderie, elle reinterprete les motifs historiques de l\'impression textile mulhousienne.',
+			'content'  => "<!-- wp:paragraph -->\n<p>Mulhouse a une ame industrielle et creative unique en Alsace. Dans cet entretien, Sophie nous ouvre les portes de son atelier.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Avec trois autres artisans, elle organise des ateliers decouverte chaque mercredi pour les jeunes du quartier.</p>\n<!-- /wp:paragraph -->",
 			'image'    => 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1200&q=80',
 			'date'     => '2026-09-23 16:00:00',
 		),
 		array(
-			'title'    => 'Commerces de proximité : le grand défi de l'attractivité du centre historique',
-			'category' => 'decrypter',
-			'excerpt'  => 'Loyer, stationnement, concurrence des zones commerciales périphériques : analyse chiffrée des forces et des fragilités des boutiques indépendantes de la rue du Sauvage et de la place de la Réunion.',
-			'content'  => '<!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Comment redonner envie de flâner et de consommer au cœur de la ville, entre les enseignes nationales et les vitrines vides ?</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Nous avons croisé les données de vacance commerciale de ces cinq dernières années avec les témoignages d'une dizaine de commerçants indépendants pour comprendre les leviers concrets de relance du centre-ville mulhousien.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Le taux de vacance commerciale atteint 18% dans certaines rues secondaires du centre, contre 8% il y a dix ans. Pourtant, des exemples de réussites existent : la rue de la Moselle, réaménagée il y a deux ans, a vu son taux d'occupation remonter à 95%.</p>
-<!-- /wp:paragraph -->',
+			'title'    => 'Commerces de proximite : le grand defi de l\'attractivite du centre historique',
+			'cat'      => 'decrypter',
+			'excerpt'  => 'Loyer, stationnement, concurrence des zones commerciales : analyse chiffree des forces et des fragilites des boutiques independantes.',
+			'content'  => "<!-- wp:paragraph -->\n<p>Comment redonner envie de flaner et de consommer au coeur de la ville ? Nous avons croise les donnees de vacance commerciale avec les temoignages des commercants.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Le taux de vacance commerciale atteint 18% dans certaines rues secondaires du centre, contre 8% il y a dix ans.</p>\n<!-- /wp:paragraph -->",
 			'image'    => 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?w=1200&q=80',
 			'date'     => '2026-09-22 11:30:00',
 		),
 		array(
-			'title'    => 'Le collectif « Mulhouse Respire » lance une cartographie participative de la qualité de l'air',
-			'category' => 'agir',
-			'excerpt'  => 'Équipés de micro-capteurs, des bénévoles arpentent les rues pour mesurer les niveaux de pollution quartier par quartier et alerter les décideurs avec des données concrètes.',
-			'content'  => '<!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Quand les citoyens se transforment en chercheurs pour défendre leur santé et celle de leurs enfants.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Le collectif « Mulhouse Respire » a distribué 50 micro-capteurs de particules fines à des volontaires répartis dans les quartiers les plus exposés : abords du périphérique, zones industrielles et axes de transit poids-lourds.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Les premières données, collectées sur trois mois, révèlent des pics de pollution préoccupants aux heures de pointe dans le quartier de la Doller et aux abords de la gare. Une carte interactive sera mise en ligne d'ici octobre.</p>
-<!-- /wp:paragraph -->',
+			'title'    => 'Le collectif Mulhouse Respire lance une cartographie participative de la qualite de l\'air',
+			'cat'      => 'agir',
+			'excerpt'  => 'Equipes de micro-capteurs, des benevoles arpentent les rues pour mesurer les niveaux de pollution quartier par quartier.',
+			'content'  => "<!-- wp:paragraph -->\n<p>Le collectif Mulhouse Respire a distribue 50 micro-capteurs de particules fines a des volontaires repartis dans les quartiers les plus exposes.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Les premieres donnees revelent des pics de pollution preoccupants aux heures de pointe. Une carte interactive sera mise en ligne prochainement.</p>\n<!-- /wp:paragraph -->",
 			'image'    => 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1200&q=80',
 			'date'     => '2026-09-21 08:45:00',
 		),
 	);
 
-	foreach ( $demo_posts as $post_data ) {
-		$cat_id = isset( $cat_ids[ $post_data['category'] ] ) ? array( $cat_ids[ $post_data['category'] ] ) : array();
-		
+	foreach ( $posts as $data ) {
+		$cat_id = isset( $cat_ids[ $data['cat'] ] ) ? array( $cat_ids[ $data['cat'] ] ) : array();
+
 		$post_id = wp_insert_post( array(
-			'post_title'    => $post_data['title'],
-			'post_content'  => $post_data['content'],
-			'post_excerpt'  => $post_data['excerpt'],
+			'post_title'    => $data['title'],
+			'post_content'  => $data['content'],
+			'post_excerpt'  => $data['excerpt'],
 			'post_status'   => 'publish',
 			'post_author'   => 1,
 			'post_category' => $cat_id,
-			'post_date'     => $post_data['date'],
+			'post_date'     => $data['date'],
 		) );
 
-		if ( $post_id && ! is_wp_error( $post_id ) && ! empty( $post_data['image'] ) ) {
-			$attachment_id = mac_sideload_image( $post_data['image'], $post_id, $post_data['title'] );
-			if ( $attachment_id ) {
-				set_post_thumbnail( $post_id, $attachment_id );
+		if ( $post_id && ! is_wp_error( $post_id ) && ! empty( $data['image'] ) ) {
+			$att_id = mac_sideload_image( $data['image'], $post_id, $data['title'] );
+			if ( $att_id ) {
+				set_post_thumbnail( $post_id, $att_id );
 			}
 		}
 	}
 
-	// 3. Configurer la première catégorie comme catégorie par défaut
 	if ( ! empty( $cat_ids['decrypter'] ) ) {
 		update_option( 'default_category', $cat_ids['decrypter'] );
 	}
 
-	// 4. Configurer les permaliens
-	update_option( 'permalink_structure', '/%postname%/' );
 	flush_rewrite_rules();
-
-	update_option( 'mac_demo_content_v3', true );
+	update_option( 'mac_demo_v5', true );
 }
 add_action( 'init', 'mac_seed_demo_content', 20 );
