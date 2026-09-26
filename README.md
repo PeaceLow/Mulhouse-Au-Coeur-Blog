@@ -52,7 +52,18 @@ Mulhouse_Au_Coeur/
 
 ---
 
-## 🚀 Feuille de Route (Roadmap)
+## 💻 Tester le Rendu en Local (sans PHP ni Docker)
+
+Le projet utilise **WordPress Playground (WASM)**. Vous pouvez tester le site instantanément avec une simple commande Node :
+
+```bash
+npm run dev
+```
+
+- **Site public** : [http://127.0.0.1:9400](http://127.0.0.1:9400)
+- **Tableau de bord WordPress** : [http://127.0.0.1:9400/wp-admin](http://127.0.0.1:9400/wp-admin) *(connexion admin automatique)*
+
+---
 
 - [x] **Phase 0 : Cadrage & Choix Technique**
   - Analyse du besoin et de la charte éditoriale

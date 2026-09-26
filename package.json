@@ -1,0 +1,17 @@
+{
+  "name": "mulhouse-au-coeur-blog",
+  "version": "1.0.0",
+  "description": "Thème et plateforme de blog citoyen pour Mulhouse au Cœur",
+  "scripts": {
+    "dev": "npx @wp-playground/cli start --path=./theme --port=9400",
+    "dev:fresh": "npx @wp-playground/cli start --path=./theme --port=9400 --reset"
+  },
+  "keywords": [
+    "wordpress",
+    "block-theme",
+    "fse",
+    "mulhouse"
+  ],
+  "author": "Mulhouse au Cœur",
+  "license": "GPL-2.0-or-later"
+}
