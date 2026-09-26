@@ -7,13 +7,235 @@ Description: Thème WordPress moderne (Block Theme / FSE) pour le média et blog
 Requires at least: 6.4
 Tested up to: 6.7
 Requires PHP: 8.0
-Version: 1.0.0
+Version: 1.1.0
 License: GNU General Public License v2 or later
 Text Domain: mulhouse-au-coeur
 Tags: block-theme, full-site-editing, news, blog, accessible-ready, translation-ready
 */
 
-/*
-Les styles principaux, la palette de couleurs, les polices et espacements 
-sont entièrement pilotés par le fichier theme.json conformément aux standards WordPress FSE.
-*/
+/* ==========================================================================
+   1. POLICES TYPOGRAPHIQUES GOOGLE FONTS (Plus Jakarta Sans & Inter)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+/* ==========================================================================
+   2. STYLES GLOBAUX & EFFETS D'INTERACTION
+   ========================================================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   3. EN-TÊTE STICKY & NAVIGATION GLASSMORPHISM
+   ========================================================================== */
+header.wp-block-group {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px -5px rgba(15, 40, 78, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wp-block-navigation-item__content {
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.wp-block-navigation-item__content:hover {
+  background-color: var(--wp--preset--color--surface);
+  color: var(--wp--preset--color--secondary) !important;
+}
+
+/* ==========================================================================
+   4. CARTES D'ARTICLES ÉDITORIALES & EFFETS HOVER
+   ========================================================================== */
+.mac-card,
+.wp-block-post-template > li,
+.wp-block-post {
+  background: #ffffff;
+  border: 1px solid var(--wp--preset--color--border);
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 1.25rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mac-card:hover,
+.wp-block-post-template > li:hover,
+.wp-block-post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 32px -8px rgba(15, 40, 78, 0.10);
+  border-color: #cbd5e1;
+}
+
+/* Zoom fluide sur l'image à la une au survol */
+.wp-block-post-featured-image {
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.wp-block-post-featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wp-block-post:hover .wp-block-post-featured-image img,
+.wp-block-post-template > li:hover .wp-block-post-featured-image img {
+  transform: scale(1.04);
+}
+
+/* ==========================================================================
+   5. BADGES ÉDITORIAUX DES 5 VERBES (PILLS)
+   ========================================================================== */
+.wp-block-post-terms a,
+.mac-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--wp--preset--font-family--heading);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  background-color: var(--wp--preset--color--primary-light);
+  color: var(--wp--preset--color--primary);
+  margin-bottom: 0.6rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.wp-block-post-terms a:hover {
+  transform: scale(1.03);
+  text-decoration: none;
+}
+
+/* Couleurs spécifiques selon les catégories */
+a[href*="decrypter"] {
+  background-color: #e8f0fe !important;
+  color: #1a56db !important;
+}
+
+a[href*="debattre"] {
+  background-color: #fef0ee !important;
+  color: #d83a27 !important;
+}
+
+a[href*="agir"] {
+  background-color: #eaf7f0 !important;
+  color: #127c49 !important;
+}
+
+a[href*="valoriser"] {
+  background-color: #fef5e7 !important;
+  color: #b86e00 !important;
+}
+
+/* ==========================================================================
+   6. TITRES ET TEXTES DES ARTICLES
+   ========================================================================== */
+.wp-block-post-title {
+  font-family: var(--wp--preset--font-family--heading);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.wp-block-post-title a {
+  color: var(--wp--preset--color--dark);
+  transition: color 0.2s ease;
+}
+
+.wp-block-post-title a:hover {
+  color: var(--wp--preset--color--secondary);
+}
+
+.wp-block-post-excerpt p {
+  color: var(--wp--preset--color--muted);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   7. HERO FEATURED (GRAND ARTICLE EN VEDETTE)
+   ========================================================================== */
+.mac-hero-card {
+  background: #ffffff;
+  border: 1px solid var(--wp--preset--color--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px -10px rgba(15, 40, 78, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.mac-hero-card:hover {
+  box-shadow: 0 20px 40px -10px rgba(15, 40, 78, 0.14);
+}
+
+/* ==========================================================================
+   8. BANNIÈRE CITOYENNE PREMIUM
+   ========================================================================== */
+.mac-citizen-banner {
+  background: linear-gradient(135deg, #0F284E 0%, #173b70 60%, #1e4e8c 100%);
+  border-radius: 20px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 36px -10px rgba(15, 40, 78, 0.25);
+}
+
+.mac-citizen-banner::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(225, 56, 43, 0.25) 0%, rgba(225, 56, 43, 0) 70%);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   9. BOUTONS STYLISÉS & CALL TO ACTIONS
+   ========================================================================== */
+.wp-block-button__link {
+  box-shadow: 0 4px 12px rgba(15, 40, 78, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.wp-block-button__link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 40, 78, 0.22);
+}
+
+.has-secondary-background-color.wp-block-button__link {
+  box-shadow: 0 4px 14px rgba(225, 56, 43, 0.30);
+}
+
+.has-secondary-background-color.wp-block-button__link:hover {
+  box-shadow: 0 8px 24px rgba(225, 56, 43, 0.45);
+}

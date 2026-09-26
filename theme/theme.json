@@ -5,8 +5,8 @@
   "settings": {
     "appearanceTools": true,
     "layout": {
-      "contentSize": "780px",
-      "wideSize": "1220px"
+      "contentSize": "820px",
+      "wideSize": "1280px"
     },
     "color": {
       "custom": true,
@@ -15,48 +15,85 @@
       "palette": [
         {
           "slug": "primary",
-          "color": "#1B3B6F",
-          "name": "Bleu profond (Décrypter)"
+          "color": "#0F284E",
+          "name": "Bleu Nuit Mulhouse"
+        },
+        {
+          "slug": "primary-light",
+          "color": "#E9F0FA",
+          "name": "Bleu Pastel (Décrypter)"
         },
         {
           "slug": "secondary",
-          "color": "#D84A38",
-          "name": "Terracotta / Ocre (Débattre)"
+          "color": "#E1382B",
+          "name": "Rouge Cœur / Terracotta"
+        },
+        {
+          "slug": "secondary-light",
+          "color": "#FEECEB",
+          "name": "Terracotta Pastel (Débattre)"
         },
         {
           "slug": "accent-green",
-          "color": "#2D7A58",
-          "name": "Vert émeraude (Agir)"
+          "color": "#1B8755",
+          "name": "Vert Émeraude (Agir)"
+        },
+        {
+          "slug": "accent-green-light",
+          "color": "#EBF7F0",
+          "name": "Vert Pastel"
         },
         {
           "slug": "accent-yellow",
-          "color": "#E5A93C",
-          "name": "Jaune chaleureux (Valoriser)"
+          "color": "#D9822B",
+          "name": "Ambre Vibrant (Valoriser)"
+        },
+        {
+          "slug": "accent-yellow-light",
+          "color": "#FEF7EC",
+          "name": "Ambre Pastel"
         },
         {
           "slug": "dark",
-          "color": "#181E29",
-          "name": "Texte sombre / Anthracite"
+          "color": "#111827",
+          "name": "Anthracite Éditorial"
         },
         {
           "slug": "light",
           "color": "#FFFFFF",
-          "name": "Blanc"
+          "name": "Blanc Pur"
         },
         {
           "slug": "surface",
-          "color": "#F7F8FA",
-          "name": "Fond clair doux"
+          "color": "#F8FAFC",
+          "name": "Fond Surface Moderne"
         },
         {
           "slug": "border",
-          "color": "#E2E5E9",
-          "name": "Bordure subtile"
+          "color": "#E2E8F0",
+          "name": "Bordure Subtile"
         },
         {
           "slug": "muted",
-          "color": "#626D7C",
-          "name": "Texte secondaire / Métadonnées"
+          "color": "#64748B",
+          "name": "Texte Muted / Métadonnées"
+        }
+      ],
+      "gradients": [
+        {
+          "slug": "gradient-primary",
+          "gradient": "linear-gradient(135deg, #0F284E 0%, #1E4E8C 100%)",
+          "name": "Dégradé Nuit Citoyenne"
+        },
+        {
+          "slug": "gradient-accent",
+          "gradient": "linear-gradient(135deg, #E1382B 0%, #F57242 100%)",
+          "name": "Dégradé Cœur d'Action"
+        },
+        {
+          "slug": "gradient-surface",
+          "gradient": "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+          "name": "Dégradé Surface Claire"
         }
       ]
     },
@@ -64,41 +101,46 @@
       "fluid": true,
       "fontFamilies": [
         {
-          "name": "Système & Moderne Sans",
-          "slug": "body",
-          "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+          "name": "Plus Jakarta Sans",
+          "slug": "heading",
+          "fontFamily": "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         },
         {
-          "name": "Éditorial & Titres",
-          "slug": "heading",
-          "fontFamily": "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
+          "name": "Inter",
+          "slug": "body",
+          "fontFamily": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }
       ],
       "fontSizes": [
         {
+          "slug": "badge",
+          "size": "0.75rem",
+          "name": "Badge Catégorie"
+        },
+        {
           "slug": "small",
           "size": "0.875rem",
-          "name": "Petit (Métadonnées)"
+          "name": "Petit / Métadonnées"
         },
         {
           "slug": "medium",
           "size": "1.0625rem",
-          "name": "Normal (Corps de texte)"
+          "name": "Corps de Texte"
         },
         {
           "slug": "large",
           "size": "1.375rem",
-          "name": "Grand (Chapô / Sous-titres)"
+          "name": "Grand / Titre Carte"
         },
         {
           "slug": "x-large",
-          "size": "1.875rem",
-          "name": "Très grand (Titres d'articles)"
+          "size": "2rem",
+          "name": "Très Grand / Titre Section"
         },
         {
           "slug": "huge",
-          "size": "2.75rem",
-          "name": "Hero / Titre principal"
+          "size": "3rem",
+          "name": "Titre Hero Majeur"
         }
       ]
     },
@@ -121,7 +163,7 @@
     "typography": {
       "fontFamily": "var(--wp--preset--font-family--body)",
       "fontSize": "var(--wp--preset--font-size--medium)",
-      "lineHeight": "1.65"
+      "lineHeight": "1.7"
     },
     "elements": {
       "heading": {
@@ -130,18 +172,18 @@
         },
         "typography": {
           "fontFamily": "var(--wp--preset--font-family--heading)",
-          "fontWeight": "700",
-          "lineHeight": "1.25"
+          "fontWeight": "800",
+          "letterSpacing": "-0.02em",
+          "lineHeight": "1.2"
         }
       },
       "link": {
-        "color": {
-          "text": "var(--wp--preset--color--primary)"
+        "color": "inherit",
+        "typography": {
+          "textDecoration": "none"
         },
         ":hover": {
-          "typography": {
-            "textDecoration": "underline"
-          }
+          "color": "var(--wp--preset--color--secondary)"
         }
       },
       "button": {
@@ -150,18 +192,19 @@
           "text": "var(--wp--preset--color--light)"
         },
         "typography": {
-          "fontWeight": "600",
-          "fontSize": "var(--wp--preset--font-size--small)"
+          "fontFamily": "var(--wp--preset--font-family--heading)",
+          "fontWeight": "700",
+          "fontSize": "0.9375rem"
         },
         "border": {
-          "radius": "6px"
+          "radius": "9999px"
         },
         "spacing": {
           "padding": {
-            "top": "0.75rem",
-            "bottom": "0.75rem",
-            "left": "1.5rem",
-            "right": "1.5rem"
+            "top": "0.85rem",
+            "bottom": "0.85rem",
+            "left": "1.75rem",
+            "right": "1.75rem"
           }
         }
       }
